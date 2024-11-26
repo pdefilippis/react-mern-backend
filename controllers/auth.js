@@ -26,6 +26,7 @@ const crearUsuario = async (req , res = response)=>{
         res.status(201).json({
             "ok": true,
             "msg": "nuevo usuario",
+            uid: usuario.id,
             token
         });
     } catch (error) {
@@ -61,7 +62,7 @@ const loguinUsuario = async(req, res = response)=>{
 
         const token = await generarJWT(usuario.id, usuario.name);
 
-        res.json({
+        return res.json({
             ok: true,
             uid: usuario.id,
             name: usuario.name,
@@ -75,14 +76,15 @@ const loguinUsuario = async(req, res = response)=>{
             "msg": "Por favor hable con el administrador"
         })
     }
-
-    res.json({"ok":true});
 }
 
 const revalidarToken = async(req, res = response)=>{
-    const token = await generarJWT(req.id, req.name);
+
+    const token = await generarJWT(req.uid, req.name);
     res.json({
         ok:true,
+        uid: req.id,
+        name: req.name,
         token
     });
 }
